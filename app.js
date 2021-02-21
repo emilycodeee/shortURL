@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
+const shortenGenerator = require('./shortenGenerator')
 
 
 const app = express()
@@ -33,9 +34,21 @@ app.get('/:shorten', (req, res) => {
 
 //new 
 
+const mainurl = 'http://localhost:3000/'
+
 app.post('/', (req, res) => {
-  const origUrl = req.body.url
-  console.log('origUrl', origUrl)
+  const origurl = req.body.url
+
+  const shorten = shortenGenerator()
+  const newShorten = mainurl + shorten
+  console.log('origUrl', origurl)
+  console.log(mainurl)
+  return ShortURL.create({
+    origurl: origurl,
+    shorten: shorten
+  })
+    .then(() => res.render('success', { newShorten }))
+
   // console.log(req.query)
   // return res.render('index', { originalUrl })
 })
