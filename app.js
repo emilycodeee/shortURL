@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars')
 const shortenGenerator = require('./shortenGenerator')
 
 
+
 const app = express()
 const port = 3000
 
@@ -28,26 +29,25 @@ app.get('/:shorten', (req, res) => {
   const shortenName = req.params.shorten
   return ShortURL.findOne({ shorten: shortenName })
     .lean()
-    .then(relink => res.redirect(relink.origurl))
+    .then(relink => res.redirect(relink.originUrl))
     .catch(error => console.log(error))
 })
 
 //new 
 
-const mainurl = 'http://localhost:3000/'
+const mainUrl = 'http://localhost:3000/'
 
 app.post('/', (req, res) => {
-  const origurl = req.body.url
+  const origUrl = req.body.url
 
   const shorten = shortenGenerator()
-  const newShorten = mainurl + shorten
-  console.log('origUrl', origurl)
-  console.log(mainurl)
+  const newShorten = mainUrl + shorten
+
   return ShortURL.create({
-    origurl: origurl,
+    originUrl: origUrl,
     shorten: shorten
   })
-    .then(() => res.render('success', { newShorten }))
+    .then(() => res.render('success', { newShorten, origUrl }))
 
   // console.log(req.query)
   // return res.render('index', { originalUrl })

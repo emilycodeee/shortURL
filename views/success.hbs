@@ -1,12 +1,10 @@
 <div class="container">
 
   <h1>Success! Please use this link:</h1>
-  <a href="{{newShorten}}">
-    <h2 class="my-3 py-2 px-2" style="background-color:antiquewhite; border-radius:10px; border:none;">{{newShorten}}
-    </h2>
-  </a>
+  <input type="shortenUrl" name="shortenUrl" id="shortenUrl" class="form-control" style="width:60%;"
+    value="{{newShorten}}">
 
   <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-primary ">Copy</button>
+    <button onclick="copyOnclick()" class="btn btn-primary " id="copyBtn">Copy</button>
   </div>
 </div>
