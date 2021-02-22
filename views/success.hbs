@@ -1,10 +1,23 @@
 <div class="container">
 
-  <h1>Success! Please use this link:</h1>
-  <input type="shortenUrl" name="shortenUrl" id="shortenUrl" class="form-control" style="width:60%;"
-    value="{{newShorten}}">
 
-  <div class="d-flex justify-content-center">
-    <button onclick="copyOnclick()" class="btn btn-primary " id="copyBtn">Copy</button>
+
+  <input type="url" name="originUrl" id="originUrl" class="form-control my-3" value="{{origUrl}}" disabled="disabled">
+
+  <div class="alert alert-success py-1" role="alert">
+    Success! Please use the link below:
+  </div>
+
+  <div class="d-flex">
+    <input type="url" name="shortenUrl" id="shortenUrl" class="form-control" style="width:60%;" value="{{newShorten}}">
+
+
+    <button onclick="copyOnclick()" class="btn btn-primary ms-2 " id="copyBtn">Copy</button>
+  </div>
+
+  <div class="d-flex justify-content-center my-3">
+    <a href="/">
+      <button type="button" class="btn btn-warning">Back</button>
+    </a>
   </div>
 </div>
