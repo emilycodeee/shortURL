@@ -10,7 +10,7 @@
 
 ## 專案畫面
   - 首頁列表
-![index]](/public/photos/index.jpg)
+![index](/public/photos/index.jpg)
   - 成功產生頁面
 ![new](/public/photos/success.jpg)
 
