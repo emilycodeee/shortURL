@@ -3,8 +3,6 @@ const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
 const shortenGenerator = require('./shortenGenerator')
 
-
-
 const app = express()
 const port = 3000
 
@@ -27,32 +25,52 @@ app.get('/', (req, res) => {
 // redirect 
 app.get('/:shorten', (req, res) => {
   const shortenName = req.params.shorten
-  return ShortURL.findOne({ shorten: shortenName })
+  ShortURL.find({ shorten: shortenName })
     .lean()
-    .then(relink => res.redirect(relink.originUrl))
+    .then((relink) => {
+      if (relink) {
+        res.redirect(relink[0].originUrl)
+      }
+    })
     .catch(error => console.log(error))
 })
 
 //new 
 
 const mainUrl = 'http://localhost:3000/'
+let newShorten = ''
 
 app.post('/', (req, res) => {
-  const origUrl = req.body.url
 
-  const shorten = shortenGenerator()
-  const newShorten = mainUrl + shorten
+  const newUrl = req.body.url
 
-  return ShortURL.create({
-    originUrl: origUrl,
-    shorten: shorten
-  })
-    .then(() => res.render('success', { newShorten, origUrl }))
+  ShortURL.find()
+    .lean()
+    .then((urlList) => {
+      newShorten = urlList.find((eachUrl) => eachUrl.originUrl === newUrl)
+      // check existed originURL
+      if (newShorten) {
+        newShorten = mainUrl + newShorten.shorten
+        return res.render('success', { newShorten, newUrl })
+      }
 
-  // console.log(req.query)
-  // return res.render('index', { originalUrl })
+      let shorten = shortenGenerator()
+      newShorten = mainUrl + shorten
+      // check existed shorten
+      while (urlList.some((eachUrl) => eachUrl.shorten === shorten)) {
+        shorten = shortenGenerator()
+      }
+      // create new data
+      return ShortURL.create({
+        originUrl: newUrl,
+        shorten: shorten
+      })
+    })
+    .then(() => res.render('success', { newShorten, newUrl }))
+    .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
   console.log(`express is listening on http://localhost:${port}`)
 })
+
