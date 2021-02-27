@@ -2,7 +2,6 @@
 const express = require('express')
 const router = express.Router()
 const ShortURL = require('../models/shorturl')
-
 const shortenGenerator = require('../shortenGenerator')
 
 
@@ -18,18 +17,21 @@ router.get('/:shorten', (req, res) => {
     .lean()
     .then((relink) => {
       if (relink) {
-        res.redirect(relink[0].originUrl)
+        res.status(301).redirect(relink[0].originUrl)
       }
     })
-    .catch(error => console.log(error))
+    .catch(() => { res.sendStatus(404) })
 })
 
 
-// generate shorten url
+// generate shorten url - variable
+const localhost = 'http://localhost:3000/'
+const herokulink = 'https://intense-beyond-20199.herokuapp.com/'
 
-const mainUrl = 'http://localhost:3000/'
+const mainUrl = process.env.NODE_ENV ? herokulink : localhost
 let newShorten = ''
 
+// generate shorten url - post
 router.post('/', (req, res) => {
 
   const newUrl = req.body.url
