@@ -13,7 +13,7 @@ A basic web app to transforming any long URL into a shorter, more readable link.
 
 ## Demo
 
-- Landing pag
+- Landing page
   ![index](/public/photos/index.jpg)
 - processing successfully
   ![new](/public/photos/success.jpg)
